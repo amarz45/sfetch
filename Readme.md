@@ -19,20 +19,20 @@ configuration file yet. Expect the performance to be closer when they are added.
 
 In a terminal, run the following commands:
 
-```zig
+```sh
 git clone https://github.com/amarz45/sfetch
 cd sfetch/source
 ```
 
 Then:
 
-```zig
+```sh
 zig build --release=safe --prefix ~/.local
 ```
 
 Alternatively, if you want to install for all users:
 
-```zig
+```sh
 zig build --release=safe --prefix /usr/local
 ```
 
