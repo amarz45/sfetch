@@ -48,6 +48,12 @@ system to be supported, you should do the following:
 1. In the body text, paste the contents of the file `/etc/os-release`;
 1. Be prepared to provide me with any additional files on my request.
 
+# Credit
+
+All of the icons in this repository are taken directly from
+![Fastfetch](https://github.com/fastfetch-cli/fastfetch/tree/dev/src/logo/ascii).
+Special thanks to ![bistona](https://github.com/bistona) for testing.
+
 # Copying
 
 This software is under the MIT license. See the `Copying.txt` file for more
