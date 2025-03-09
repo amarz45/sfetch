@@ -1,0 +1,18 @@
+const std = @import("std");
+
+const stderr = std.io.getStdErr().writer();
+
+pub inline fn perrorf(comptime fmt: []const u8, args: anytype, err: u8)
+! noreturn {
+    try stderr.print("Error: "++fmt++"\n", args);
+    std.process.exit(err);
+}
+
+pub inline fn perror(comptime msg: []const u8, err: u8) ! noreturn {
+    try stderr.writeAll("Error: "++msg++"\n");
+    std.process.exit(err);
+}
+
+pub inline fn parse_failure(comptime filename: []const u8) ! noreturn {
+    try perror(filename++": failed to parse.", 1);
+}
