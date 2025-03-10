@@ -140,7 +140,7 @@ fn count_dirs_in_dir_uncached(outer_dir: std.fs.Dir) ! u16 {
             const dir = try outer_dir.openDir(
                 entry.name, .{.iterate = true}
             );
-            count += try count_dirs(dir);
+            count +|= try count_dirs(dir);
         }
     }}
 
