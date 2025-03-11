@@ -39,7 +39,7 @@ zig build --release=safe --prefix /usr/local
 # Contributing
 
 Currently, most widely-used Linux distributions are supported. See
-[supported operating systems.md](supported operating systems.md) for a full
+[supported operating systems.md]("supported operating systems.md") for a full
 list. I plan to support all operating systems that Fastfetch supports, including
 BSDs and Windows. If you want your operating system to be supported, you should
 do the following:
