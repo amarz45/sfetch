@@ -1,4 +1,5 @@
 const std = @import("std");
+const global = @import("global.zig");
 const modules = @import("modules.zig");
 const util = @import("util.zig");
 
@@ -7,7 +8,6 @@ const c = @cImport({
 });
 
 const cwd = std.fs.cwd();
-const stderr = std.io.getStdErr().writer();
 
 const color_set = modules.color_set;
 const color_reset = modules.color_reset;
@@ -248,14 +248,14 @@ fn sql_query_uncached(
 
     rc = c.sqlite3_prepare_v2(db, query, -1, &stmt, 0);
     if (rc != c.SQLITE_OK) {
-        try stderr.writeAll("Error: failed to execute query.\n");
+        try global.stderr.writeAll("Error: failed to execute query.\n");
         _ = c.sqlite3_close(db);
         std.process.exit(1);
     }
 
     rc = c.sqlite3_step(stmt);
     if (rc != c.SQLITE_ROW) {
-        try stderr.writeAll("Error: failed to retrieve data.\n");
+        try global.stderr.writeAll("Error: failed to retrieve data.\n");
         _ = c.sqlite3_close(db);
         std.process.exit(1);
     }
@@ -269,9 +269,7 @@ fn check_cache(
     modified: i128,
 )
 ! ?[]const u8 {
-    const file = cache_dir.openFile(
-        "p", .{.mode = .read_write}
-    )
+    const file = cache_dir.openFile("p", .{.mode = .read_write})
     catch |err| switch (err) {
         error.FileNotFound => return null,
         else => return err,

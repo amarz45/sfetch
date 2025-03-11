@@ -1,15 +1,14 @@
 const std = @import("std");
-
-const stderr = std.io.getStdErr().writer();
+const global = @import("global.zig");
 
 pub inline fn perrorf(comptime fmt: []const u8, args: anytype, err: u8)
 ! noreturn {
-    try stderr.print("Error: "++fmt++"\n", args);
+    try global.stderr.print("Error: "++fmt++"\n", args);
     std.process.exit(err);
 }
 
 pub inline fn perror(comptime msg: []const u8, err: u8) ! noreturn {
-    try stderr.writeAll("Error: "++msg++"\n");
+    try global.stderr.writeAll("Error: "++msg++"\n");
     std.process.exit(err);
 }
 

@@ -1,9 +1,9 @@
 const std = @import("std");
+const global = @import("global.zig");
 const modules = @import("modules.zig");
+const params = @import("params.zig");
 const util = @import("util.zig");
 const icons = @import("icons.zig");
-
-const stdout = std.io.getStdOut().writer();
 
 pub fn main() ! void {
     const entries = [_]modules.Entry {
@@ -13,10 +13,15 @@ pub fn main() ! void {
 
     var buf: [256]u8 = undefined;
     const os_info = try modules.get_os_info(&buf);
-
     const os: modules.Os = try .get(os_info.id);
 
-    const icon, const spaces = switch (os) {
+    const icon_id: modules.Os
+    = if (try params.parse()) |str|
+        try .get(str)
+    else
+        os;
+
+    const icon, const spaces = switch (icon_id) {
         .alpine   => try icons.get("alpine"),
         .arch     => try icons.get("arch"),
         .centos   => try icons.get("centos"),
@@ -57,5 +62,5 @@ pub fn main() ! void {
         else break;
     }}
 
-    try stdout.writeAll(result.constSlice());
+    try global.stdout.writeAll(result.constSlice());
 }

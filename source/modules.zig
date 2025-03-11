@@ -1,12 +1,12 @@
 const std = @import("std");
 
 const fmt = @import("fmt.zig");
+const global = @import("global.zig");
 const packages = @import("packages.zig");
 const util = @import("util.zig");
 const Memory = @import("Memory.zig");
 
 const cwd = std.fs.cwd();
-const stderr = std.io.getStdErr().writer();
 const linux = std.os.linux;
 const utsname = std.posix.system.utsname;
 
