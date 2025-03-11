@@ -34,7 +34,7 @@ const Dimensions = struct {
 //     - `list`: the amount of codepoints for each line.
 //     - `max`: the number of codepoints for the line with the most codepoints.
 fn Codepoints(comptime _icon: []const u8, dimensions: Dimensions) type {
-    @setEvalBranchQuota(16_000);
+    @setEvalBranchQuota(256_000);
     const height = dimensions.height;
 
     var icon = _icon;
@@ -79,10 +79,7 @@ fn get_array(comptime field: []const u8) Icon_type(field) {
     const dimensions: Dimensions = .get(icon);
     const codepoints: Codepoints(icon, dimensions) = .{};
 
-    const height = dimensions.height;
-    const width = dimensions.width;
-
-    var lines_array: [height]Bounded_array(u8, width) = undefined;
+    var lines_array: Icon_type(field) = undefined;
     
     var iter = std.mem.splitScalar(u8, icon, '\n');
     var i: u8 = 0;
@@ -103,14 +100,37 @@ fn Icon_type(comptime field: []const u8) type {
     const dimensions: Dimensions = .get(icon);
 
     const height = dimensions.height;
-    const width  = dimensions.width;
+
+    // There is a bug for the width calculation that results in the incorrect
+    // width for Tails.
+    const width
+    = if (std.mem.eql(u8, field, "tails"))
+        31
+    else
+        dimensions.width;
 
     return [height]Bounded_array(u8, width);
 }
 
 // Returns a string of the contents of the icon file.
 inline fn get_icon_str(comptime field: []const u8) []const u8 {
-    return if (std.mem.eql(u8, field, "locos"))
+    return comptime
+    if (
+        std.mem.eql(u8, field, "almalinux")
+        or std.mem.eql(u8, field, "antix")
+        or std.mem.eql(u8, field, "bunsenlabs")
+        or std.mem.eql(u8, field, "archcraft")
+        or std.mem.eql(u8, field, "archlabs")
+        or std.mem.eql(u8, field, "deepin")
+        or std.mem.eql(u8, field, "kdeneon")
+        or std.mem.eql(u8, field, "parrot")
+        or std.mem.eql(u8, field, "peppermint")
+        or std.mem.eql(u8, field, "qubes")
+        or std.mem.eql(u8, field, "rhel")
+        or std.mem.eql(u8, field, "tails")
+        or std.mem.eql(u8, field, "trisquel")
+        or std.mem.eql(u8, field, "zorin")
+    )
         get_icon_file_large(field)
     else
         get_icon_file(field);

@@ -22,18 +22,43 @@ pub fn main() ! void {
         os;
 
     const icon, const spaces = switch (icon_id) {
-        .alpine   => try icons.get("alpine"),
-        .arch     => try icons.get("arch"),
-        .centos   => try icons.get("centos"),
-        .debian   => try icons.get("debian"),
-        .fedora   => try icons.get("fedora"),
-        .gentoo   => try icons.get("gentoo"),
-        .kali     => try icons.get("kali"),
-        .manjaro  => try icons.get("manjaro"),
-        .opensuse => try icons.get("opensuse"),
-        .ubuntu   => try icons.get("ubuntu"),
+        .almalinux   => try icons.get("almalinux"),
+        .alpine      => try icons.get("alpine"),
+        .antix       => try icons.get("antix"),
+        .arch        => try icons.get("arch"),
+        .archcraft   => try icons.get("archcraft"),
+        .archlabs    => try icons.get("archlabs"),
+        .arco        => try icons.get("arco"),
+        .artix       => try icons.get("artix"),
+        .bunsenlabs  => try icons.get("bunsenlabs"),
+        .centos      => try icons.get("centos"),
+        .debian      => try icons.get("debian"),
+        .deepin      => try icons.get("deepin"),
+        .devuan      => try icons.get("devuan"),
+        .elementary  => try icons.get("elementary"),
+        .endeavouros => try icons.get("endeavouros"),
+        .fedora      => try icons.get("fedora"),
+        .garuda      => try icons.get("garuda"),
+        .gentoo      => try icons.get("gentoo"),
+        .kali        => try icons.get("kali"),
+        .kdeneon     => try icons.get("kdeneon"),
+        .manjaro     => try icons.get("manjaro"),
+        .mint        => try icons.get("mint"),
+        .mx          => try icons.get("mx"),
+        .opensuse    => try icons.get("opensuse"),
+        .parrot      => try icons.get("parrot"),
+        .peppermint  => try icons.get("peppermint"),
+        .pop         => try icons.get("pop"),
+        .qubes       => try icons.get("qubes"),
+        .rhel        => try icons.get("rhel"),
+        .rocky       => try icons.get("rocky"),
+        .tails       => try icons.get("tails"),
+        .trisquel    => try icons.get("trisquel"),
+        .ubuntu      => try icons.get("ubuntu"),
+        .zorin       => try icons.get("zorin"),
     };
 
+    //var result: std.BoundedArray(u8, 2048) = .{};
     var result: std.BoundedArray(u8, 2048) = .{};
 
     {var i: u8 = 0;

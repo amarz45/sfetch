@@ -57,39 +57,55 @@ pub fn get_total(buf: []u8, os: modules.Os) ! []const u8 {
     const pfx = color_set++"Packages (total):"++color_reset++" ";
 
     const num, const pkg_format = a: switch (os) {
+        // APK
         .alpine => {
             const path = "/lib/apk/db/installed";
             const num = try count_keys(&buf_, cache_dir, path, "C:Q");
-            break :a .{num, "apk"};
+            break :a .{num, "APK"};
         },
-        .arch => {
-            const path = "/var/lib/pacman/local";
-            const num = try count_dirs_in_dir(&buf_, cache_dir, path);
-            break :a .{num, "portage"};
-        },
-        .debian, .ubuntu, => {
+
+        // dpkg
+        .antix, .bunsenlabs, .debian, .deepin, .devuan, .elementary, .kdeneon,
+        .mint, .mx, .parrot, .peppermint, .pop, .tails, .trisquel, .ubuntu,
+        .zorin
+        => {
             const path = "/var/lib/dpkg/status";
             const key = "Status: install ok installed";
             const num = try count_keys(&buf_, cache_dir, path, key);
             break :a .{num, "dpkg"};
         },
-        .fedora => {
-            const path = "/var/lib/rpm/rpmdb.sqlite";
-            const query = "select count(*) from packages";
-            const num = try sql_query(&buf_, cache_dir, path, query);
-            break :a .{num, "rpm"};
+
+        // pacman
+        .arch, .archcraft, .archlabs, .arco, .artix, .endeavouros, .garuda,
+        .manjaro
+        => {
+            const path = "/var/lib/pacman/local";
+            const num = try count_dirs_in_dir(&buf_, cache_dir, path);
+            break :a .{num, "pacman"};
         },
+
+        // Portage
         .gentoo => {
             const path = "/var/db/pkg";
             const num = try count_dirs_in_dir(&buf_, cache_dir, path);
-            break :a .{num, "portage"};
+            break :a .{num, "Portage"};
         },
+
+        // RPM
+        .almalinux, .fedora, .centos, .opensuse, .qubes, .rhel, .rocky => {
+            const path = "/var/lib/rpm/rpmdb.sqlite";
+            const query = "select count(*) from packages";
+            const num = try sql_query(&buf_, cache_dir, path, query);
+            break :a .{num, "RPM"};
+        },
+
         //.loc_os => {
             //const path = "/opt/Loc-OS-LPKG/installed-lpkg/"
                 //++ "Listinstalled-lpkg.list";
             //const num = try count_newlines_str(&buf_, path);
             //break :a .{num, "lpkg"};
         //},
+
         else => return pfx++"Not implemented for your package format.",
     };
 

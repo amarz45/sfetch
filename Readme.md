@@ -38,11 +38,11 @@ zig build --release=safe --prefix /usr/local
 
 # Contributing
 
-Currently, the only operating systems with full support are  Alpine Linux,
-Arch Linux, Debian Linux, Ubuntu Linux, Fedora Linux, and Gentoo Linux. I plan
-to support all operating systems that Fastfetch supports, including BSDs and
-Windows. If you want your operating system to be supported, you should do the
-following:
+Currently, most widely-used Linux distributions are supported. See
+![supported operating systems.md](supported operating systems.md) for a full
+list. I plan to support all operating systems that Fastfetch supports, including
+BSDs and Windows. If you want your operating system to be supported, you should
+do the following:
 
 1. Open an issue in the issue tracker;
 1. Add your operating system name in the title;
