@@ -62,6 +62,11 @@ pub fn get_total(buf: []u8, os: modules.Os) ! []const u8 {
             const num = try count_keys(&buf_, cache_dir, path, "C:Q");
             break :a .{num, "apk"};
         },
+        .arch => {
+            const path = "/var/lib/pacman/local";
+            const num = try count_dirs_in_dir(&buf_, cache_dir, path);
+            break :a .{num, "portage"};
+        },
         .debian, .ubuntu, => {
             const path = "/var/lib/dpkg/status";
             const key = "Status: install ok installed";
