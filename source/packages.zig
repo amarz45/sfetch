@@ -15,12 +15,12 @@ const color_reset = modules.color_reset;
 pub fn get_user(buf: []u8, os: modules.Os) ! []const u8 {
     const pfx = color_set++"Packages (user):"++color_reset++" ";
 
-    const num, const pkg_format = switch (os) {
-        .alpine => a: {
+    const num, const pkg_format = a: switch (os) {
+        .alpine => {
             const num = try count_newlines("/etc/apk/world");
             break :a .{num, "apk"};
         },
-        .gentoo => a: {
+        .gentoo => {
             const num = try count_newlines("/var/lib/portage/world");
             break :a .{num, "portage"};
         },
