@@ -349,7 +349,7 @@ fn get_uptime(buf: []u8) ! []const u8 {
 
     if (minutes < 60)
         return std.fmt.bufPrint(
-            buf, pfx++"{d} m {d} s", .{minutes, seconds_rem}
+            buf, pfx++"{d} min {d} s", .{minutes, seconds_rem}
         );
 
     const hours = @trunc(minutes / 60);
