@@ -206,7 +206,7 @@ fn get_battery(buf: []u8) ! []const u8 {
     const status_file = try battery_dir.openFile("status", .{});
 
     var capacity_buf: ["100\n".len]u8 = undefined;
-    var status_buf: ["Discharging\n".len]u8 = undefined;
+    var status_buf: ["Not charging\n".len]u8 = undefined;
 
     const capacity_bytes_read = try capacity_file.preadAll(&capacity_buf, 0);
     const status_bytes_read = try status_file.preadAll(&status_buf, 0);
