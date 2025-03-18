@@ -57,11 +57,11 @@ pub fn get_total(buf: []u8, os: modules.Os) ! []const u8 {
     const pfx = color_set++"Packages (total):"++color_reset++" ";
 
     const num, const pkg_format = a: switch (os) {
-        // APK
+        // apk
         .alpine => {
             const path = "/lib/apk/db/installed";
             const num = try count_keys(&buf_, cache_dir, path, "C:Q");
-            break :a .{num, "APK"};
+            break :a .{num, "apk"};
         },
 
         // dpkg

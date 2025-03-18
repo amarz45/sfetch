@@ -1,10 +1,30 @@
 const std = @import("std");
+const Icon = @This();
 
 const count_codepoints = std.unicode.utf8CountCodepoints;
 
+lines:          Icon_lines,
+spaces_padding: []const u8,
+
 // A 2D array where both the width and the height is bounded.
-const Icon = Bounded_array(Bounded_array(u8, 128), 128);
+const Icon_lines = Bounded_array(Bounded_array(u8, 128), 128);
 const Bounded_array = std.BoundedArray;
+
+// Returns a generic 2D bounded array representing the icon, and a string
+// of spaces for alignment when the icon’s height has been exceeded.
+pub fn get(comptime field: []const u8) ! Icon {
+    const icon = comptime get_array(field);
+    const height = icon.len;
+    const width = icon[0].len;
+
+    var dest: Icon_lines = try .init(height);
+
+    for (icon, 0..) |v, i| {
+        dest.set(i, try .fromSlice(v.constSlice()));
+    }
+
+    return .{.lines = dest, .spaces_padding = " "**width};
+}
 
 // Used for storing the maximum amount of raw bytes needed to store the width
 // and the height respectively.
@@ -13,7 +33,7 @@ const Dimensions = struct {
     height: u8,
 
     fn get(comptime icon: []const u8) Dimensions {
-        @setEvalBranchQuota(2000);
+        @setEvalBranchQuota(8000);
 
         var width:  u8 = 0;
         var height: u8 = 0;
@@ -54,22 +74,6 @@ fn Codepoints(comptime _icon: []const u8, dimensions: Dimensions) type {
         list: [height]u8 = list,
         max: u8 = max,
     };
-}
-
-// Returns a generic 2D bounded array representing the icon, and a string
-// of spaces for alignment when the icon’s height has been exceeded.
-pub inline fn get(comptime field: []const u8) ! struct {Icon, []const u8} {
-    const icon = comptime get_array(field);
-    const height = icon.len;
-    const width = icon[0].len;
-
-    var dest: Icon = try .init(height);
-
-    for (icon, 0..) |v, i| {
-        dest.set(i, try .fromSlice(v.constSlice()));
-    }
-
-    return .{dest, " "**width};
 }
 
 // Returns a 2D array representing the icon. The height is constant whereas the
@@ -113,33 +117,6 @@ fn Icon_type(comptime field: []const u8) type {
 }
 
 // Returns a string of the contents of the icon file.
-inline fn get_icon_str(comptime field: []const u8) []const u8 {
-    return comptime
-    if (
-        std.mem.eql(u8, field, "almalinux")
-        or std.mem.eql(u8, field, "antix")
-        or std.mem.eql(u8, field, "bunsenlabs")
-        or std.mem.eql(u8, field, "archcraft")
-        or std.mem.eql(u8, field, "archlabs")
-        or std.mem.eql(u8, field, "deepin")
-        or std.mem.eql(u8, field, "kdeneon")
-        or std.mem.eql(u8, field, "parrot")
-        or std.mem.eql(u8, field, "peppermint")
-        or std.mem.eql(u8, field, "qubes")
-        or std.mem.eql(u8, field, "rhel")
-        or std.mem.eql(u8, field, "tails")
-        or std.mem.eql(u8, field, "trisquel")
-        or std.mem.eql(u8, field, "zorin")
-    )
-        get_icon_file_large(field)
-    else
-        get_icon_file(field);
-}
-
-inline fn get_icon_file(comptime icon: []const u8) []const u8 {
-    return @embedFile("icons/fastfetch/"++icon++"_small.txt");
-}
-
-inline fn get_icon_file_large(comptime icon: []const u8) []const u8 {
-    return @embedFile("icons/fastfetch/"++icon++".txt");
+inline fn get_icon_str(comptime id: []const u8) []const u8 {
+    return @embedFile("icons/fastfetch/"++id++".txt");
 }
